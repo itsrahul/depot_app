@@ -43,9 +43,19 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy line_item" do
     assert_difference('LineItem.count', -1) do
-      delete line_item_url(@line_item)
+      delete line_item_url(store_index_url)
     end
 
     assert_redirected_to line_items_url
+  end
+
+  test "should create line_item via ajax" do
+    assert_difference('LineItem.count') do
+      post line_items_url, params: { product_id: products(:ruby).id },
+        xhr: true
+    end 
+
+    assert_response :success
+    assert_match /<tr class=\\"line-item-highlight/, @response.body
   end
 end
