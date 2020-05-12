@@ -3,7 +3,7 @@
 <% end %>
 
 <h1>Your Pragmatic Catalog</h1>
-
+<%= "Counter is: #{session[:counter]}" if session[:counter] > 5 %>
 <ul class="catalog">
   <% cache @products do %>
     <% @products.each do |product| %>
