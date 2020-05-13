@@ -4,7 +4,7 @@ import NoPayType            from './NoPayType';
 import CreditCardPayType    from './CreditCardPayType';
 import CheckPayType         from './CheckPayType';
 import PurchaseOrderPayType from './PurchaseOrderPayType';
-import PayTm                  from './PayTm';
+import PayTm                from './PayTm';
 import Upi                  from './Upi';
 
 class PayTypeSelector extends React.Component {

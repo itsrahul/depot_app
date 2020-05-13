@@ -1,4 +1,5 @@
 class OrdersController < ApplicationController
+  skip_before_action :authorize, only: [:new, :create]
   include CurrentCart
   before_action :set_cart, only: [:new,:create]
   before_action :ensure_cart_isnt_empty, only: :new
@@ -29,11 +30,11 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new(order_params)
     @order.add_line_items_from_cart(@cart)
-
     respond_to do |format|
       if @order.save
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
+        ChargeOrderJob.perform_later(@order,pay_type_params.to_h)
         format.html { redirect_to store_index_url, notice: 'Thank you for your order.'}
         format.json { render :show, status: :created, location: @order }
       else
@@ -92,6 +93,10 @@ class OrdersController < ApplicationController
         params.require(:order).permit(:routing_number, :account_number)
       elsif order_params[:pay_type] == "Purchase order"
         params.require(:order).permit(:po_number)
+      elsif order_params[:pay_type] == "Upi"
+        params.require(:order).permit(:upi_id)
+      elsif order_params[:pay_type] == "PayTm"
+        params.require(:order).permit(:paytm_no)
       else
         {}
       end

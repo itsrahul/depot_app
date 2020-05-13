@@ -62,3 +62,7 @@ Rails.application.configure do
 
   config.action_cable.disable_request_forgery_protection = true
 end
+
+Depot::Application.configure do
+  config.action_mailer.delivery_method = :test
+end
