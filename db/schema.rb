@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_14_072024) do
+ActiveRecord::Schema.define(version: 2020_05_18_112807) do
 
   create_table "action_mailbox_inbound_emails", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "status", default: 0, null: false
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_072024) do
   create_table "carts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "line_items_count", default: 0, null: false
   end
 
   create_table "line_items", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -86,6 +87,9 @@ ActiveRecord::Schema.define(version: 2020_05_14_072024) do
     t.decimal "price", precision: 8, scale: 2
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "enabled", default: false
+    t.decimal "discount_price", precision: 10
+    t.string "permalink"
   end
 
   create_table "support_requests", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -103,6 +107,7 @@ ActiveRecord::Schema.define(version: 2020_05_14_072024) do
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "email"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
