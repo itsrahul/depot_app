@@ -4,6 +4,8 @@ class User < ApplicationRecord
 
   after_destroy :ensure_an_admin_remains
 
+  validates :email, uniqueness: { case_sensitive: false }, email: true
+
   class Error < StandardError
   end
 
