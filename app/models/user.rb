@@ -4,8 +4,7 @@ class User < ApplicationRecord
 
   after_destroy :ensure_an_admin_remains
 
-  validates :email, uniqueness: true
-  validates :email, format: { with: /\A\w{3,}@\w{3,}[.][a-zA-Z]{2,}\z/i }
+  validates :email, uniqueness: { case_sensitive: false }, email: true
 
   class Error < StandardError
   end

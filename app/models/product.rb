@@ -1,11 +1,3 @@
-class UrlValidator < ActiveModel::EachValidator
-  def validate_each(record, attribute, value)
-    unless value =~ /\.(gif|jpg|png)\z/i
-      record.errors[attribute] << (options[:message] || "must be a URL for GIF, JPG or PNG image.")
-    end
-  end
-end
-
 class Product < ApplicationRecord
   has_many :line_items
   has_many :orders, through: :line_items
@@ -14,11 +6,8 @@ class Product < ApplicationRecord
 
   validates :title, :description, :image_url, presence: true
   validates :title, uniqueness: true
-  validates :image_url, allow_blank: true, url: true
-  #  format: {
-  #   with:    %r{\.(gif|jpg|png)\z}i,
-  #   message: 'must be a URL for GIF, JPG or PNG image.'
-  # }
+  validates :image_url, allow_blank: true, image_url: true
+
   validates :title, length: {minimum: 10}
   validates :words_in_description, length: { minimum: 5, maximum: 10}
   validates :price, :discount_price, allow_blank: true, numericality: { greater_than_or_equal_to: 0.01 }
