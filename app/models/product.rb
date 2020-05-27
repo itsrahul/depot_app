@@ -10,12 +10,13 @@ class Product < ApplicationRecord
 
   validates :title, length: {minimum: 10}
   validates :words_in_description, length: { minimum: 5, maximum: 10}
-  validates :price, :discount_price, allow_blank: true, numericality: { greater_than_or_equal_to: 0.01 }
-  validates :price, numericality: { greater_than_or_equal_to: :discount_price}
+  validates :price, allow_blank: true, numericality: { greater_than_or_equal_to: 0.01 }
+  validates :discount_price, allow_blank: true, numericality: { less_than_or_equal_to: :price}
 
   validates :permalink, uniqueness: :true, format: { with: /\A[a-zA-Z0-9\-]+\z/ }
   validates :words_in_permalink, length: { minimum: 3} 
 
+  after_initialize :set_title, :set_discount_price
   private
 
     # ensure that there are no line items referencing this product
@@ -32,5 +33,13 @@ class Product < ApplicationRecord
   
     def words_in_description
       description.scan(/\w+/)
+    end
+
+    def set_title
+      self.title = 'abc' if title.blank?
+    end
+
+    def set_discount_price
+      self.discount_price = self.price if discount_price.blank?
     end
 end
