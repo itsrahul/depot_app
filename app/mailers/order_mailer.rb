@@ -21,4 +21,9 @@ class OrderMailer < ApplicationMailer
 
     mail to: order.email, subject: 'Pragmatic Store Order Shipped'
   end
+
+  def new_user(user)
+    @user = user
+    mail to: user.email, subject: 'Welcome'
+  end
 end
