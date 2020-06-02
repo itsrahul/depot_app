@@ -8,6 +8,7 @@ class Order < ApplicationRecord
     "PayTm"          => 4
   }
   has_many :line_items, dependent: :destroy
+  belongs_to :user
   validates :name, :address, :email, presence:true
   validates :pay_type, inclusion: pay_types.keys
 
@@ -16,6 +17,10 @@ class Order < ApplicationRecord
       item.cart_id = nil
       line_items << item
     end
+  end
+
+  def total_amount
+    line_items.sum(&:total_price)
   end
 
   def charge!(pay_type_params)

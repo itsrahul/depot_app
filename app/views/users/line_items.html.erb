@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+<%#= render @orders %>
+<% if @line_items.empty? %>
+  <h3>No Record Found for <%= current_user.name%></h3>
+<% else %>
+  <h1>Product History for <%= current_user.name%></h1>
+  <table>
+    <thead>
+      <tr>
+        <th> Order Id</th>
+        <th> Product Id</th>
+        <th> Product Title</th>
+        <th> Quantity</th>
+        <th> Order Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @line_items.each do |line_item| %>
+        <tr>
+          <td><%= line_item.order_id %></td>
+          <td><%= line_item.product_id %></td>
+          <td><%= line_item.product.title %></td>
+          <td><%= line_item.quantity %></td>
+          <td><%= line_item.updated_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
+  <center><%= will_paginate @line_items %></center>
+<% end %>
+<%= link_to 'Back', users_path %>
