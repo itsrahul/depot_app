@@ -28,7 +28,6 @@ class UsersController < ApplicationController
 
   # GET /users/line_items
   def line_items
-    # @orders = current_user.orders
     @line_items = current_user.line_items.paginate(page: params[:page], per_page: 5)
   end
 
