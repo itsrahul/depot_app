@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_18_112807) do
+ActiveRecord::Schema.define(version: 2020_06_01_100453) do
 
   create_table "action_mailbox_inbound_emails", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "status", default: 0, null: false
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(version: 2020_05_18_112807) do
     t.integer "pay_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", default: 2, null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -88,7 +90,7 @@ ActiveRecord::Schema.define(version: 2020_05_18_112807) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "enabled", default: false
-    t.decimal "discount_price", precision: 10
+    t.decimal "discount_price", precision: 8, scale: 2
     t.string "permalink"
   end
 
@@ -114,5 +116,6 @@ ActiveRecord::Schema.define(version: 2020_05_18_112807) do
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
+  add_foreign_key "orders", "users"
   add_foreign_key "support_requests", "orders"
 end

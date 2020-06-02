@@ -61,6 +61,8 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1.json
   def destroy
     @line_item.destroy
+    @line_item.cart.line_items_count -= 1
+    @line_item.cart.save!
     respond_to do |format|
       format.html { redirect_to store_index_url} #, notice: 'Product was successfully deleted.' }
       format.json { head :no_content }

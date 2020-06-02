@@ -1,0 +1,20 @@
+<div>
+<table>
+  <thead>
+    <tr>
+      <th>Order Id</th>
+      <th> Total Amount</th>
+      <th align="center">Products</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr align="center">
+      <td><%= order.id %></td>
+      <td><%= order.total_amount %></td>
+      <% order.line_items.each do |line_item| %>
+      <td><%= line_item.product.title %> x <%= line_item.quantity %></td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+</div>
