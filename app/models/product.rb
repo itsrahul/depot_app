@@ -3,15 +3,15 @@ class Product < ApplicationRecord
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
 
-  scope :enabled, -> {where(:enabled => true)}
+  scope :enabled, -> { where(enabled: true) }
 
-  scope :get_product_in_atleast_one_line_item, -> {
+  def self.atleast_in_one_line_item
     joins(:line_items).distinct
-  }
+  end
   
-  scope :get_title_for_product_in_atleast_one_line_item, -> {
-    get_product_in_atleast_one_line_item.pluck(:title)
-  }
+  def self.get_title_for_atleast_in_one_line_item
+    atleast_in_one_line_item.pluck(:title)
+  end
   # before_destroy :ensure_not_referenced_by_any_line_item
 
   validates :title, :description, :image_url, presence: true
