@@ -2,4 +2,11 @@
 <p>
   It's <%= Time.now %>.
   We have <%= pluralize(@total_orders,"order") %>.
+<h1> Categories: </h1>
+  <% @categories.each do |category| %>
+  <%= category.name %> : 
+  <%= category.sub_categories.pluck(:name) unless category.sub_categories.blank? %>
+  <br>
+  <% end %>
+
 </p>

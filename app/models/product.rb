@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  belongs_to :category
 
   scope :enabled, -> { where(enabled: true) }
 
@@ -27,7 +28,42 @@ class Product < ApplicationRecord
   validates :words_in_permalink, length: { minimum: 3} 
 
   after_initialize :set_title, :set_discount_price
+  after_commit :set_parent_products_count, on: [:create, :destroy]
+  before_update :update_parent_products_count
+
   private
+
+  def set_parent_products_count
+    category.products_count = category.products.count
+    category.save
+    unless category.is_root?
+      parent_category = category.parent
+      parent_category.products_count = parent_category.products.count + parent_category.sub_categories.sum(:products_count)
+      parent_category.save
+    end
+  end
+
+  def update_parent_products_count
+    old_category = Category.find(category_id_was) #4
+    if old_category.is_root?
+      old_category.products_count = old_category.products.count + old_category.sub_categories.sum(:products_count) - 1
+      old_category.save
+    else
+      old_category.products_count -= 1
+      old_category.save
+      
+      old_parent_category = old_category.parent
+      old_parent_category.products_count -= 1
+      old_parent_category.save
+    end
+      category.reload.products_count += 1 
+      category.save
+      unless category.is_root?
+        parent_category = category.parent #3
+        parent_category.products_count += 1
+        parent_category.save
+      end
+  end
 
     # ensure that there are no line items referencing this product
     def ensure_not_referenced_by_any_line_item
