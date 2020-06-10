@@ -29,40 +29,27 @@ class Product < ApplicationRecord
 
   after_initialize :set_title, :set_discount_price
   after_commit :set_parent_products_count, on: [:create, :destroy]
-  before_update :update_parent_products_count
+  after_update :update_parent_products_count, unless: Proc.new { |a| a.previous_changes[:category_id].nil?}
 
   private
 
   def set_parent_products_count
-    category.products_count = category.products.count
-    category.save
-    unless category.is_root?
-      parent_category = category.parent
-      parent_category.products_count = parent_category.products.count + parent_category.sub_categories.sum(:products_count)
-      parent_category.save
+    Category.transaction do
+      category.refresh_products_count!
+      category.parent.refresh_products_count! unless category.is_root?
     end
   end
 
   def update_parent_products_count
-    old_category = Category.find(category_id_was) #4
-    if old_category.is_root?
-      old_category.products_count = old_category.products.count + old_category.sub_categories.sum(:products_count) - 1
-      old_category.save
-    else
-      old_category.products_count -= 1
-      old_category.save
-      
-      old_parent_category = old_category.parent
-      old_parent_category.products_count -= 1
-      old_parent_category.save
+    old_category, new_category = Category.find(previous_changes[:category_id])
+    
+    Category.transaction do
+      old_category.refresh_products_count!
+      old_category.parent.refresh_products_count! unless old_category.is_root?
+
+      new_category.refresh_products_count!
+      new_category.parent.refresh_products_count! unless new_category.is_root?
     end
-      category.reload.products_count += 1 
-      category.save
-      unless category.is_root?
-        parent_category = category.parent #3
-        parent_category.products_count += 1
-        parent_category.save
-      end
   end
 
     # ensure that there are no line items referencing this product
