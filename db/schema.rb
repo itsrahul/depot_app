@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_01_100453) do
+ActiveRecord::Schema.define(version: 2020_06_05_114117) do
 
   create_table "action_mailbox_inbound_emails", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "status", default: 0, null: false
@@ -58,6 +58,15 @@ ActiveRecord::Schema.define(version: 2020_06_01_100453) do
     t.integer "line_items_count", default: 0, null: false
   end
 
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "parent_id"
+    t.string "name"
+    t.integer "products_count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["parent_id"], name: "index_categories_on_parent_id"
+  end
+
   create_table "line_items", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "product_id", null: false
     t.bigint "cart_id"
@@ -92,6 +101,8 @@ ActiveRecord::Schema.define(version: 2020_06_01_100453) do
     t.boolean "enabled", default: false
     t.decimal "discount_price", precision: 8, scale: 2
     t.string "permalink"
+    t.bigint "category_id", default: 1, null: false
+    t.index ["category_id"], name: "index_products_on_category_id"
   end
 
   create_table "support_requests", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -117,5 +128,6 @@ ActiveRecord::Schema.define(version: 2020_06_01_100453) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "orders", "users"
+  add_foreign_key "products", "categories"
   add_foreign_key "support_requests", "orders"
 end

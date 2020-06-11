@@ -1,5 +1,8 @@
 <p id="notice"><%= notice %></p>
 <%#= render @orders %>
+<% content_for :head do %>
+  <title>User Line Items</title>
+<% end %>
 <% if @line_items.empty? %>
   <h3>No Record Found for <%= current_user.name%></h3>
 <% else %>

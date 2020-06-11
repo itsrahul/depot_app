@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  belongs_to :category
 
   scope :enabled, -> { where(enabled: true) }
 
@@ -27,7 +28,29 @@ class Product < ApplicationRecord
   validates :words_in_permalink, length: { minimum: 3} 
 
   after_initialize :set_title, :set_discount_price
+  after_commit :set_parent_products_count, on: [:create, :destroy]
+  after_update :update_parent_products_count, unless: Proc.new { |a| a.previous_changes[:category_id].nil?}
+
   private
+
+  def set_parent_products_count
+    Category.transaction do
+      category.refresh_products_count!
+      category.parent.refresh_products_count! unless category.is_root?
+    end
+  end
+
+  def update_parent_products_count
+    old_category, new_category = Category.find(previous_changes[:category_id])
+    
+    Category.transaction do
+      old_category.refresh_products_count!
+      old_category.parent.refresh_products_count! unless old_category.is_root?
+
+      new_category.refresh_products_count!
+      new_category.parent.refresh_products_count! unless new_category.is_root?
+    end
+  end
 
     # ensure that there are no line items referencing this product
     def ensure_not_referenced_by_any_line_item
