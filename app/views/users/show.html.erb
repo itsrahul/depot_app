@@ -1,9 +1,33 @@
+<% if notice %>
 <p id="notice"><%= notice %></p>
+<% end  %>
 
 <p>
   <strong>Name:</strong>
   <%= @user.name %>
 </p>
+<p>
+  <strong>Address:</strong><br>
+  
+  <% unless @user.address.city.blank? %>
+  <strong>City:</strong>
+  <%= @user.address.city %>
+  <% end  %>
 
+  <% unless @user.address.state.blank? %>
+  <strong>State:</strong>
+  <%= @user.address.state %>
+  <% end  %>
+
+  <% unless @user.address.country.blank? %>
+  <strong>Country:</strong>
+  <%= @user.address.country %>
+  <% end  %>
+  
+  <% if @user.address.pincode %>
+  <strong>Pincode:</strong>
+  <%= @user.address.pincode %>
+  <% end  %>
+</p>
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

@@ -1,9 +1,4 @@
-<% if notice %>
-<p id="notice"><%= notice %></p>
-<% end %>
-<%#= render partial: "orders" %>
-<%#= render @orders %>
-
+<div>
 <% if @orders.empty? %>
   <h3>No Record Found for <%= current_user.name%></h3>
 <% else %>
@@ -11,16 +6,16 @@
   <table>
     <thead>
       <tr>
-        <th> Order Id</th>
+        <th>Order Id</th>
         <th> Total Amount</th>
-        <th> Products</th>
+        <th align="center">Products</th>
       </tr>
     </thead>
     <tbody>
       <% @orders.each do |order| %>
         <tr align="center">
           <td><%= order.id %></td>
-          <td><%= number_to_currency(order.total_amount) %></td>
+          <td><%=  number_to_currency(order.total_amount) %></td>
           <% order.line_items.each do |line_item| %>
           <td><%= line_item.product.title %> x <%= line_item.quantity %></td>
           <% end %>
@@ -28,6 +23,5 @@
       <% end %>
     </tbody>
   </table>
-  <br>
 <% end %>
-<%= link_to 'Back', users_path %>
+</div>

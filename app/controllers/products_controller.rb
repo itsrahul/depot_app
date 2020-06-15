@@ -5,8 +5,12 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @products = Product.all
-  end
-
+    respond_to do |format|
+      format.html { @products }
+      format.json { render json: @products.to_json( only: [:title], include: {category: { only: [:name] } }  ) }
+      end
+    end
+    
   # GET /products/1
   # GET /products/1.json
   def show
@@ -41,6 +45,7 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
+    # debugger
     respond_to do |format|
       if @product.update(product_params)
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
@@ -75,6 +80,12 @@ class ProductsController < ApplicationController
     end
   end
 
+  def upload
+    uploaded_file = params[:picture]
+    File.open(Rails.root.join('app', 'assets', uploaded_file.original_filename), 'wb') do |file|
+      file.write(uploaded_file.read)
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
@@ -83,6 +94,6 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:title, :description, :image_url, :price, :enabled, :discount_price, :permalink, :category_id)
+      params.require(:product).permit(:title, :description, :image_url, :price, :enabled, :discount_price, :permalink, :category_id, product_images: [])
     end
 end

@@ -2,7 +2,8 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
-  belongs_to :category
+  belongs_to :category, optional: true
+  has_many_attached :product_images
 
   scope :enabled, -> { where(enabled: true) }
 
@@ -17,7 +18,7 @@ class Product < ApplicationRecord
 
   validates :title, :description, :image_url, presence: true
   validates :title, uniqueness: true
-  validates :image_url, allow_blank: true, image_url: true
+  # validates :image_url, allow_blank: true, image_url: true
 
   validates :title, length: {minimum: 10}
   validates :words_in_description, length: { minimum: 5, maximum: 10}
@@ -26,6 +27,8 @@ class Product < ApplicationRecord
 
   validates :permalink, uniqueness: :true, format: { with: /\A[a-zA-Z0-9\-]+\z/ }
   validates :words_in_permalink, length: { minimum: 3} 
+  validates :category_id, presence: true
+  validates :product_images_size, length:{ minimum: 1, maximum: 3}
 
   after_initialize :set_title, :set_discount_price
   after_commit :set_parent_products_count, on: [:create, :destroy]
@@ -58,6 +61,11 @@ class Product < ApplicationRecord
         errors.add(:base, 'Line Items present')
         throw :abort
       end
+    end
+
+    def product_images_size
+      # debugger
+      product_images
     end
 
     def words_in_permalink

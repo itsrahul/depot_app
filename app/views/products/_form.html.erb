@@ -23,7 +23,8 @@
 
   <div class="field">
     <%= form.label :image_url %>
-    <%= form.text_field :image_url %>
+    <%#= form.text_field :image_url, multiple: true %>
+    <%= form.file_field :product_images, multiple: true , accept: 'image/png,image/gif,image/jpeg' %>
   </div>
 
   <div class="field">
@@ -48,7 +49,8 @@
 
   <div class="field">
     <%= form.label :category_id %>
-    <%= form.text_field :category_id %>
+    <%#= form.text_field :category_id %>
+    <%= form.collection_select(:category_id, Category.all, :id, :name , include_blank: "Select One", selected: 0 ) %>
   </div>
 
   <div class="actions">

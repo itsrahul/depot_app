@@ -10,7 +10,7 @@
   <tbody>
     <tr align="center">
       <td><%= order.id %></td>
-      <td><%= order.total_amount %></td>
+      <td><%= number_to_currency(order.total_amount) %></td>
       <% order.line_items.each do |line_item| %>
       <td><%= line_item.product.title %> x <%= line_item.quantity %></td>
       <% end %>
