@@ -45,7 +45,6 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
-    # debugger
     respond_to do |format|
       if @product.update(product_params)
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
@@ -80,12 +79,6 @@ class ProductsController < ApplicationController
     end
   end
 
-  def upload
-    uploaded_file = params[:picture]
-    File.open(Rails.root.join('app', 'assets', uploaded_file.original_filename), 'wb') do |file|
-      file.write(uploaded_file.read)
-    end
-  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
