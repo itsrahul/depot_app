@@ -1,5 +1,6 @@
+<% if notice  %>
 <p id="notice"><%= notice %></p>
-
+<% end %>
 <p>
   <strong>Title:</strong>
   <%= @product.title %>
@@ -19,6 +20,17 @@
   <strong>Price:</strong>
   <%= @product.price %>
 </p>
+
+<div id = 'slider'>
+  <div id = 'slideshow'>
+    <% @product.product_images.each do |product_image| %>
+      <div>
+        <%= image_tag  url_for(product_image) %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<%= javascript_pack_tag "slider" %>
 
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%= link_to 'Back', products_path %>

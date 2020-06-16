@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-
+  layout "myorders", only: [:orders, :line_items]
   # GET /users
   # GET /users.json
   def index
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         format.html { redirect_to users_url, 
-          notice: "User #{@user.name} was successfully created." }
+          notice: "User #{@user.name} was successfully created, along with address." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to users_url, 
-          notice: "User #{@user.name} was successfully updated." }
+          notice: "User #{@user.name} was successfully updated, along with address." }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -85,6 +85,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :password, :password_confirmation, :email)
+      params.require(:user).permit(:name, :password, :password_confirmation, :email, address_attributes: [:city, :state, :country, :pincode,:_destroy])
     end
 end

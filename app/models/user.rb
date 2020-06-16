@@ -4,6 +4,9 @@ class User < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   has_secure_password
 
+  has_one :address
+  accepts_nested_attributes_for :address, allow_destroy: true
+  
   after_create_commit :welcome_email
   before_update :unable_to_update_admin
   before_destroy :unable_to_delete_admin

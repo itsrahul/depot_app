@@ -36,6 +36,30 @@
                               size:40%>
     </div>
 
+    <%= form.fields_for :address do |address_form| %>
+      
+      <div class="field">
+        <%= address_form.label :city, 'City:' %>
+        <%= address_form.text_field :city, size: 40 %>
+      </div>
+
+      <div class="field">
+        <%= address_form.label :state, 'State:' %>
+        <%= address_form.text_field :state, size: 40 %>
+      </div>
+
+      <div class="field">
+        <%= address_form.label :country, 'Country:' %>
+        <%= address_form.text_field :country, size: 40 %>
+      </div>
+
+      <div class="field">
+        <%= address_form.label :pincode, 'Pincode:' %>
+        <%= address_form.number_field :pincode, size: 40 %>
+      </div>
+
+    <% end %>
+
     <div class="actions">
       <%= form.submit %>
     </div>
