@@ -1,0 +1,28 @@
+<h1> Categories: </h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Parent</th>
+      <th>Product Count</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @categories.each do |category| %>
+      <tr>
+        <td><%= category.name %></td>
+        
+        <% if category.parent %>
+        <td><%= category.parent.name %></td>
+        <% else %>
+        <td> -</td>
+        <% end  %>
+        <td><%= category.products_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

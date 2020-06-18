@@ -27,4 +27,9 @@ Rails.application.routes.draw do
     root 'store#index',  as: 'store_index'
   end
 
+  namespace :admin do
+    resources :reports
+    resources :categories
+  end
+  
 end

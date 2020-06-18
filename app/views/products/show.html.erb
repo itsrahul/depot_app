@@ -25,7 +25,7 @@
   <div id = 'slideshow'>
     <% @product.product_images.each do |product_image| %>
       <div>
-        <%= image_tag  url_for(product_image) %>
+        <%= image_tag product_image %>
       </div>
     <% end %>
   </div>
