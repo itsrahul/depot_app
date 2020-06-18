@@ -28,8 +28,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :reports
-    resources :categories
+    resources :reports, only: :index
+    resources :categories, only: :index
   end
   
 end
