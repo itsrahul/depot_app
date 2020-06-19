@@ -12,8 +12,7 @@
   <tbody>
     <% @categories.each do |category| %>
       <tr>
-        <td><%= category.name %></td>
-        
+        <td><%= link_to category.name, admin_category_path(category.id) %></td>
         <% if category.parent %>
         <td><%= category.parent.name %></td>
         <% else %>
@@ -26,3 +25,4 @@
 </table>
 
 <br>
+<%= link_to 'Back', admin_url %>
