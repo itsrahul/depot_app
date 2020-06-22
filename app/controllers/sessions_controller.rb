@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
-  skip_before_action :authorize
+  skip_before_action :authorize, :check_last_active
+  # before_action :reset_counter
+  
   def new
   end
 
@@ -7,7 +9,8 @@ class SessionsController < ApplicationController
     user = User.find_by(name: params[:name])
     if user.try(:authenticate, params[:password])
       session[:user_id] = user.id
-      redirect_to admin_url
+      current_user.update_columns(last_active_at: Time.current)
+      redirect_to user.role == 'admin' ? admin_reports_url : admin_url
     else
       redirect_to login_url, alert: "Invalid user/password combination"
     end
@@ -17,4 +20,9 @@ class SessionsController < ApplicationController
     session[:user_id] = nil
     redirect_to store_index_url, notice: "Logged out"
   end
+
+  # protected
+  # def reset_counter
+  #   session[:counter] = 0
+  # end
 end

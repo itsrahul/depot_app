@@ -5,6 +5,11 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @products = Product.all
+    unless params[:category_id].nil?
+      @category = Category.find(params[:category_id])
+      @products = @category.products
+      @products += @category.sub_category_products.map(&:products)[0] if @category.is_root?
+    end
     respond_to do |format|
       format.html { @products }
       format.json { render json: @products.to_json( only: [:title], include: {category: { only: [:name] } }  ) }
@@ -61,7 +66,7 @@ class ProductsController < ApplicationController
 
   def who_bought
     @product = Product.find(params[:id])
-    @latest_order = @product.orders.order(:update_at).latest_order
+    @latest_order = @product.orders.order(:updated_at).last
     if stale?(@latest_order)
       respond_to do |format|
         format.atom
