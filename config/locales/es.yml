@@ -71,7 +71,14 @@ es:
    Usted ordenó los siguientes artículos:"
       line2:      "Le enviaremos un correo electrónico por separado cuando se envíe su pedido."
     
+    shipped:
+      subject:    "Tienda pragmática: pedido enviado"
+
+    new_user:
+      subject:    "Bienvenidos"
+
     consolidated_mail:
+      subject:    "Correo consolidado"
       salutation: "Estimado"
       summary:    "Aquí hay un resumen de todos sus pedidos."
       order_id:   "Solicitar Id"

@@ -5,8 +5,8 @@ class OrderMailer < ApplicationMailer
   #
   #   en.order_mailer.received.subject
   #
-  def received(order)
-    @order = order
+  def received(id)
+    @order = Order.find(id)
     @order.line_items.each do |line_item|
       line_item.product.product_images[1,2].each.with_index do |product_image, index| 
         attachments["#{line_item.product.title}_#{index+1}"] = product_image
@@ -15,7 +15,7 @@ class OrderMailer < ApplicationMailer
     headers['X-SYSTEM-PROCESS-ID'] = Process.pid
 
     I18n.with_locale(@order.user.language) do
-      mail to: order.email, subject: t('.subject')
+      mail to: @order.email, subject: t('.subject')
     end
   end
 
@@ -24,21 +24,20 @@ class OrderMailer < ApplicationMailer
   #
   #   en.order_mailer.shipped.subject
   #
-  def shipped
-    @order = order
+  def shipped(id)
+    @order = Order.find(id)
 
-    mail to: order.email, subject: 'Pragmatic Store Order Shipped'
+    mail to: @order.email, subject: t('.subject')
   end
 
   def new_user(user)
     @user = user
-    mail to: user.email, subject: 'Welcome'
+    mail to: @user.email, subject: t('.subject')
   end
 
-  def consolidated_mail(user)
-    @user = user
-    @orders = user.orders
+  def consolidated_mail(id)
+    @user = User.find(id)
     
-    mail to: user.email, subject: 'Consolidated mail'
+    mail to: @user.email, subject: t('.subject')
   end
 end

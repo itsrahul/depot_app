@@ -5,7 +5,7 @@ class OrderMailerPreview < ActionMailer::Preview
   def received
     # OrderMailer.received(Order.find(15))
     # OrderMailer.received(Order.find(17))
-    OrderMailer.received(Order.last)
+    OrderMailer.received(15)
   end
 
   # Preview this email at http://localhost:3000/rails/mailers/order_mailer/shipped
@@ -14,6 +14,6 @@ class OrderMailerPreview < ActionMailer::Preview
   end
 
   def consolidated_mail
-    OrderMailer.consolidated_mail(User.find(2))
+    OrderMailer.consolidated_mail(2)
   end
 end
