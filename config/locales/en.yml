@@ -58,5 +58,27 @@ en:
       purchase_order_pay_type:
         po_number: "PO #"
 
+  order_mailer:
+    received:
+      salutation: "Dear"
+      subject:    "Pragmatic Store Order Confirmation"
+      line1:      "Thank you for your recent order from The Pragmatic Store.
+  You ordered the following items:"
+      line2:      "We'll send you a separate e-mail when your order ships."
+    
+    shipped:
+      subject:    "Pragmatic Store: Order Shipped"
+
+    new_user:
+      subject:    "Welcome"
+
+    consolidated_mail:
+      subject:    "Consolidated mail"
+      salutation: "Dear"
+      summary:    "Here's a summary of all your orders."
+      order_id:   "Order Id"
+      total_amount:   "Total Amount"
+      products:   "Products"
+
 
   thanks:          "Thank you for your order"

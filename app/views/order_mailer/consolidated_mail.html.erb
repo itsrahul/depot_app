@@ -1,0 +1,14 @@
+<h3><%= t('.salutation') %> <%= @user.name %></h3>
+<%= t('.summary') %>
+<table>
+    <thead>
+      <tr>
+        <th><%= t('.order_id') %></th>
+        <th> <%= t('.total_amount') %></th>
+        <th align="center"><%= t('.products') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render @user.orders %>
+    </tbody>
+  </table>

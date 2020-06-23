@@ -1,5 +1,10 @@
-<h1>Order#received</h1>
+<h1><%= t('.salutation') %> <%= @order.name %></h1>
 
 <p>
-  <%= @greeting %>, find me in app/views/order_mailer/received.html.erb
+  <%= t('.line1')  %>
+  <br>
+  <%= render @order.line_items %>
+  <br>
+  <%= t('.line2') %>
+
 </p>

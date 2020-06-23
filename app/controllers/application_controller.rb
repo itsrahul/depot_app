@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_last_active
-    if (Time.current - current_user.last_active_at > 300)
+    if (Time.current - current_user.last_active_at > 3000)
       redirect_to sessions_destroy_path, notice: 'Session expired due to inactivity for 5 minutes'
     else
       current_user.update_columns(last_active_at: Time.current)
@@ -52,6 +52,9 @@ class ApplicationController < ActionController::Base
     if params[:locale]
       if I18n.available_locales.map(&:to_s).include?(params[:locale])
         I18n.locale = params[:locale]
+        if logged_in?
+          current_user.update_columns(language: params[:locale])
+        end
       else
         flash.now[:notice] = 
           "#{params[:locale]} translation not available"
