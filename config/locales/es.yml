@@ -63,4 +63,19 @@ es:
       purchase_order_pay_type:
         po_number: "Número"
 
+  order_mailer:
+    received:
+      salutation: "Estimado"
+      subject:    "Confirmación de pedido de tienda pragmática"
+      line1:      "Gracias por su reciente pedido de The Pragmatic Store.
+   Usted ordenó los siguientes artículos:"
+      line2:      "Le enviaremos un correo electrónico por separado cuando se envíe su pedido."
+    
+    consolidated_mail:
+      salutation: "Estimado"
+      summary:    "Aquí hay un resumen de todos sus pedidos."
+      order_id:   "Solicitar Id"
+      total_amount:   "Cantidad Total"
+      products:   "Productos"
+
   thanks:          "Gracias por su pedido"

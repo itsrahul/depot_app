@@ -39,7 +39,7 @@ class SlideShow
         $(this.toBeDisplayed)
           .addClass(this.displayClass)
           .fadeIn(1000)
-          .delay(500)
+          .delay(1500)
           .promise()
           .done( this.runSlideshow());
       });
