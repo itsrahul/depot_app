@@ -2,6 +2,7 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  has_many :ratings, dependent: :destroy
   belongs_to :category, optional: true
   has_many_attached :product_images
 
@@ -33,6 +34,10 @@ class Product < ApplicationRecord
   after_initialize :set_title, :set_discount_price
   after_commit :set_parent_products_count, on: [:create, :destroy]
   after_update :update_parent_products_count, unless: Proc.new { |a| a.previous_changes[:category_id].nil?}
+
+  def avg_rating
+    ratings.average(:value)
+  end
 
   private
 

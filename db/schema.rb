@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_22_131828) do
+ActiveRecord::Schema.define(version: 2020_06_24_112909) do
 
   create_table "action_mailbox_inbound_emails", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "status", default: 0, null: false
@@ -123,6 +123,16 @@ ActiveRecord::Schema.define(version: 2020_06_22_131828) do
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
+  create_table "ratings", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "user_id", null: false
+    t.decimal "value", precision: 4, scale: 2, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_ratings_on_product_id"
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
   create_table "support_requests", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "email", comment: "Email of the submitter"
     t.string "subject", comment: "Subject of their support email"
@@ -151,5 +161,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_131828) do
   add_foreign_key "line_items", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "products", "categories"
+  add_foreign_key "ratings", "products"
+  add_foreign_key "ratings", "users"
   add_foreign_key "support_requests", "orders"
 end
