@@ -10,7 +10,12 @@
       <% cache product do %>
         <li>
           <%= image_tag product.product_images.first %>
-          <h2><%= product.title %></h2>
+          <h2>
+            <%= product.title %>
+            <% if product.avg_rating %>
+             <div class='rating_value' data-product-id="<%= product.id %>"> (<%= number_with_precision(product.avg_rating, precision: 1) %>/5) </div>
+            <% end %>
+          </h2>
           <p>
             <%= sanitize(product.description) %>
           </p>
@@ -20,8 +25,18 @@
             line_items_path(product_id: product, locale: I18n.locale),
             remote: true %>
           </div>
+          <div class="ratings" data-product-id="<%= product.id %>">
+          <% if logged_in? %>
+            <%= form_with(model: product, url: rate_product_path(product.id) ,remote: true, method: :get) do |form| %>
+            <%= form.number_field :product_rating, in: 1.0..5.0, step: 0.5, size: 5 %>
+            <%= form.submit "Rate" %>
+            <% end %>
+          <% end  %>
+          </div>
         </li>
       <% end %>
     <% end %>
   <% end %>
+  <%= javascript_pack_tag "rating" %>
+
 </ul>

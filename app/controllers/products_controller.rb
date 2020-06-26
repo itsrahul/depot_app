@@ -74,6 +74,19 @@ class ProductsController < ApplicationController
     end
   end
 
+  def rate
+    rating = Rating.find_or_create_by(product_id: params[:id], user_id: session[:user_id])
+    rating.value = params[:product_rating]
+    # respond_to do |format|
+    #   format.js
+    # end
+    if rating.save
+      @rating = Product.find(params[:id]).avg_rating
+      new_rating = Product.find(params[:id]).avg_rating
+      render json: { product_id: params[:id] , rating: new_rating }
+    end
+  end
+
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
@@ -92,6 +105,6 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:title, :description, :image_url, :price, :enabled, :discount_price, :permalink, :category_id, product_images: [])
+      params.require(:product).permit(:title, :description, :image_url, :price, :enabled, :discount_price, :permalink, :category_id, :product_rating, product_images: [])
     end
 end

@@ -1,0 +1,4 @@
+Array.from(document.getElementsByClassName('rating_value')).forEach((element) => {
+  if (element.getAttribute('data-product-id') == <%= params[:id] %>){
+    element.innerHTML = "(<%= number_with_precision(@rating, precision: 1) %>/5)" }
+})

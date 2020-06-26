@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     end
     resources :products, path: :books do
       get :who_bought, on: :member, format: 'atom'
+      get :rate, on: :member
     end
     
     resources :support_requests, only: [ :index, :update]
